@@ -16,6 +16,15 @@ public class StudentGradesBook {
     private double midtermWeight;
     private double finalExamWeight;
 
+    private String studentName;
+    private String gNumber;
+
+    // Constructor
+    // need to add a new parameter (double of weighted grades?)
+    public StudentGradesBook(String name, String gNumber) {
+       //code
+    }
+
     public String toString() {
         String rv = "Name: " + getStudentName() + "\n";
         rv += "G#: " + getGNumber() + "\n";
