@@ -1,12 +1,17 @@
 /*
-* Names: Deepika Parthasarathy
-* netID: dparthas
-* G#: 01365740
-* Lecture section: 
-* Lab section:
+* Names: Deepika Parthasarathy, Amina Jusupovic, Taisuke Nishikawa
+* netID: dparthas, ajusupov, tnishika
+* G#: G01365740, G01432659, ^01433107 
+* Lecture section: B01
+* Lab section: 2B2, 2B1, 2B1
 */
 
 public class StudentGradesBook {
+
+// This global variable is not needed.
+//     //int i is for the for loops
+//     private int i;
+
     private double participation;
     private double midterm;
     private double finalExam;
@@ -261,6 +266,5 @@ public class StudentGradesBook {
     
     public static void main(String[]args){
 
-    
     }//MAIN
 }//END
