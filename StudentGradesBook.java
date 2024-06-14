@@ -8,10 +8,6 @@
 
 public class StudentGradesBook {
 
-// This global variable is not needed.
-//     //int i is for the for loops
-//     private int i;
-
     private double participation;
     private double midterm;
     private double finalExam;
