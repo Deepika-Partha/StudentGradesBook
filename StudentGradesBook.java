@@ -28,10 +28,12 @@ public class StudentGradesBook {
     private String studentName;
     private String gNumber;
 
-    // Constructor
-    /* This constructor should pass these arguments to the setters for the student name, G#, and weight array (described below), 
-    and then create empty array instances (with appropriate type specifiers) for the readings, labs, exercises, and projects fields.
-    Note: I'm not too sure what it means by "create empty array instances for the readings, labs, exercises, and projects fields." */
+    /* 
+    	This constructor should pass these arguments to the setters for the student name, G#, and weight array (described below), 
+    	and then create empty array instances (with appropriate type specifiers) for the readings, labs, exercises, and projects fields. 
+    */
+    
+	// Constructor
     public StudentGradesBook(String name, String gNumber, double[] weights) {
         
         setStudentName(name);
@@ -46,7 +48,7 @@ public class StudentGradesBook {
         
     }
 
-    //add methods
+    // ADD METHODS
     public void addReading(double d){
         double[] newReadings = new double[readings.length + 1];
         System.arraycopy(readings, 0, newReadings, 0, readings.length);
@@ -75,7 +77,7 @@ public class StudentGradesBook {
         projects = newProjects;
     }
 
-    //Getters
+    // GETTERS
     public double getParticipation(){
         return participation;
     }
@@ -96,7 +98,7 @@ public class StudentGradesBook {
         return gNumber;
     }
 
-    //Setters
+    //SETTERS
     public void setParticipation(double participation){
         this.participation = participation;
     }
@@ -109,7 +111,6 @@ public class StudentGradesBook {
         this.finalExam = finalExam;
     }
     
-    //EDIT: I believe you meant to write student name (Currenly produces compiler errors)
     public void setStudentName(String studentName) {
         this.studentName = studentName;
     }
@@ -118,11 +119,13 @@ public class StudentGradesBook {
         this.gNumber = gNumber;
     }
     
-    // WEIGHT SETTER
+
     /* 
        Assume that the weights are provided in the order given above (participation, reading, labs, exercises, projects, midterm, final), 
        that they are between 0 and 1 and sum to 1.0 (no validation necessary)
     */
+    
+    // WEIGHT SETTER
     public void setWeights(double[] weights){
         participationWeight = weights[0];
         readingsWeight = weights[1];
@@ -133,7 +136,7 @@ public class StudentGradesBook {
         finalExamWeight = weights[6];
     }
 
-    // UNWEIGHTED METHODS
+
     /* 
        Assume that scores are provided per subsection in ascending order, therefore to calculate the score for the reading category, 
        you should add together all the scores - excluding the lowest 15 - and then divide the result by the total number of scores minus 15.
@@ -144,7 +147,7 @@ public class StudentGradesBook {
        P.S. This is straight from the exercise 
     */
     
-    
+	// UNWEIGHTED METHODS
     public double unweightedReadingsScore() {
         if (readings.length < 16) {
             return 100.0;
@@ -189,7 +192,6 @@ public class StudentGradesBook {
     }
 
     // TOTAL SCORE CALCULATION
-    
     public double totalScore(){
         double result = 0.0;
         result += participation * participationWeight;
