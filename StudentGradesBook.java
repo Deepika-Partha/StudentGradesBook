@@ -29,6 +29,7 @@ public class StudentGradesBook {
     and then create empty array instances (with appropriate type specifiers) for the readings, labs, exercises, and projects fields.
     Note: I'm not too sure what it means by "create empty array instances for the readings, labs, exercises, and projects fields." */
     public StudentGradesBook(String name, String gNumber, double[] weights) {
+        setStudentName(name);
         setGNumber(gNumber);
         setWeights(weights);
         
