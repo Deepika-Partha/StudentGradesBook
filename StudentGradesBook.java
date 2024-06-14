@@ -1,9 +1,4 @@
 public class StudentGradesBook {
-
-// This global variable is not needed.
-//     //int i is for the for loops
-//     private int i;
-
     private double participation;
     private double midterm;
     private double finalExam;
@@ -24,79 +19,46 @@ public class StudentGradesBook {
     private String studentName;
     private String gNumber;
 
-    // Constructor
-    /* This constructor should pass these arguments to the setters for the student name, G#, and weight array (described below), 
-    and then create empty array instances (with appropriate type specifiers) for the readings, labs, exercises, and projects fields.
-    Note: I'm not too sure what it means by "create empty array instances for the readings, labs, exercises, and projects fields." */
     public StudentGradesBook(String name, String gNumber, double[] weights) {
         setStudentName(name);
         setGNumber(gNumber);
         setWeights(weights);
-        
+
+        // Initialize arrays
+        labs = new double[0];
+        exercises = new double[0];
+        projects = new double[0];
+        readings = new double[0];
     }
 
-    //add methods
     public void addReading(double d){
-
+        double[] newReadings = new double[readings.length + 1];
+        System.arraycopy(readings, 0, newReadings, 0, readings.length);
+        newReadings[readings.length] = d;
+        readings = newReadings;
     }
-    
+
     public void addLab(double d){
-
+        double[] newLabs = new double[labs.length + 1];
+        System.arraycopy(labs, 0, newLabs, 0, labs.length);
+        newLabs[labs.length] = d;
+        labs = newLabs;
     }
-    
+
     public void addExercise(double d){
-
+        double[] newExercises = new double[exercises.length + 1];
+        System.arraycopy(exercises, 0, newExercises, 0, exercises.length);
+        newExercises[exercises.length] = d;
+        exercises = newExercises;
     }
-    
+
     public void addProject(double d){
-
+        double[] newProjects = new double[projects.length + 1];
+        System.arraycopy(projects, 0, newProjects, 0, projects.length);
+        newProjects[projects.length] = d;
+        projects = newProjects;
     }
 
-    //Getters
-    public double getParticipation(){
-        return participation;
-    }
-    
-    public double getMidterm(){
-        return midterm;
-    }
-    
-    public double getFinalExam(){
-        return finalExam;
-    }
-    
-    public String getStudentName(){
-        return studentName;
-    }
-    
-    public String getGNumber(){
-        return gNumber;
-    }
-
-    //Setters
-    public void setParticipation(double participation){
-        this.participation = participation;
-    }
-    
-    public void setMidterm(double midterm){
-        this.midterm = midterm;
-    }
-    
-    public void setFinalExem(double finalExam){
-        this.finalExam = finalExam;
-    }
-    
-    //EDIT: I believe you meant to write student name (Currenly produces compiler errors)
-    public void setStudentName(String studentName) {
-        this.studentName = studentName;
-    }
-    
-    public void setGNumber(String gNumber){
-        this.gNumber = gNumber;
-    }
-    //weight setter
-    /* Assume that the weights are provided in the order given above (participation, reading, labs, exercises, projects, midterm, final), 
-       that they are between 0 and 1 and sum to 1.0 (no validation necessary)*/
     public void setWeights(double[] weights){
         participationWeight = weights[0];
         readingsWeight = weights[1];
@@ -107,91 +69,61 @@ public class StudentGradesBook {
         finalExamWeight = weights[6];
     }
 
-    //unweigthed methods
-
-    /* Assume that scores are provided per subsection in ascending order, therefore to calculate the score for the reading category, 
-    you should add together all the scores - excluding the lowest 15 - and then divide the result by the total number of scores minus 15.
-    The easiest way to exclude the lowest 15 scores is to locate the right index to start including values in the calculation, 
-    the scores are already sorted, from lowest to highest, 
-    skip the first 15, and then add together the remaining scores starting from the 16th. 
-    Note: if there are fewer than 16 items in the reading category, this method should just return 100, indicating full credit. 
-    P.S. This is straight from the exercise */
-    
-    
-    // EDIT: edited this code, was hard to understand
-    public double unweightedReadingsScore() {
-        if (readings.length < 16) {
+    public double unweightedReadingsScore(){
+        int count = 0;
+        double sum = 0;
+        if(readings.length >= 16){
+            for(int i = 15; i < readings.length; i++){
+                sum += readings[i];
+                count++;
+            }
+            return sum / count;
+        }
+        else{
             return 100.0;
         }
+    }
+
+    public double unweightedLabsScore(){
         double sum = 0;
-        for (int i = 15; i < readings.length; i++) {
-            sum += readings[i];
+        for(double lab : labs){
+            sum += lab;
         }
-        return sum / (readings.length - 15);
+        return labs.length == 0 ? 100.0 : sum / labs.length;
     }
 
-    //rest of the unweighted scores
-    
-    /* EDIT: to reduce redundancy I just made a 
-     calculateAverage method 
-    
-    */
-    public double unweightedLabsScore() {
-        return calculateAverage(labs);
-    }
-
-    public double unweightedExercisesScore() {
-        return calculateAverage(exercises);
-    }
-
-    public double unweightedProjectsScore() {
-        return calculateAverage(projects);
-    }
-
-    private double calculateAverage(double[] array) {
-        if (array.length == 0) {
-            return 100.0;
-        }
+    public double unweightedExercisesScore(){
         double sum = 0;
-        for (double score : array) {
-            sum += score;
+        for(double exercise : exercises){
+            sum += exercise;
         }
-        return sum / array.length;
+        return exercises.length == 0 ? 100.0 : sum / exercises.length;
     }
 
-    //finals grading
-    
-    /* EDIT: You don't need if-else statements because
-    using the comparative operators in this case will
-    return T/F.
-    
-    */
-    public boolean finalReplacesMidterm() {
+    public double unweightedProjectsScore(){
+        double sum = 0;
+        for(double project : projects){
+            sum += project;
+        }
+        return projects.length == 0 ? 100.0 : sum / projects.length;
+    }
+
+    public boolean finalReplacesMidterm(){
         return finalExam > midterm;
     }
 
-    public boolean finalIsPassing() {
+    public boolean finalIsPassing(){
         return finalExam >= 60.0;
     }
 
-    //total score calcuation
-    
     public double totalScore(){
-    
-        /* EDIT: This method is meant to return a double
-           but the variable result is int...
-           
-           there was also no return statement here
-    
-        */
-        double result = 0.0;
+        double result = 0;
         result += participation * participationWeight;
         result += unweightedReadingsScore() * readingsWeight;
         result += unweightedLabsScore() * labsWeight;
         result += unweightedExercisesScore() * exercisesWeight;
         result += unweightedProjectsScore() * projectsWeight;
 
-        //Note: this is to check whether or not the final replaces the midterm when the final is greater than the midterm. 
         if(finalReplacesMidterm()){
             result += finalExam * finalExamWeight;
         }
@@ -203,61 +135,98 @@ public class StudentGradesBook {
         return result;
     }
 
-    //letter grading
-    /* EDIT: You were missing parentheses which 
-       caused complier errors so I rewrote this
-    
-    */
-    public String letterGrade() {
-        if (!finalIsPassing()) {
+    public String letterGrade(){
+        if(!finalIsPassing()){
             return "F";
         }
-
         double score = totalScore();
-
-        if (score >= 98.0) {
+        if(score >= 98 && score <= 100){
             return "A+";
-        } else if (score >= 92.0) {
+        }
+        else if(score >= 92 && score < 98){
             return "A";
-        } else if (score >= 90.0) {
+        }
+        else if(score >= 90 && score < 92){
             return "A-";
-        } else if (score >= 88.0) {
+        }
+        else if(score >= 88 && score <=90){
             return "B+";
-        } else if (score >= 82.0) {
+        }
+        else if(score >= 82 && score < 88){
             return "B";
-        } else if (score >= 80.0) {
+        }
+        else if(score >= 80 && score < 82){
             return "B-";
-        } else if (score >= 78.0) {
+        }
+        else if(score >= 78 && score < 80){
             return "C+";
-        } else if (score >= 72.0) {
+        }
+        else if(score >= 72 && score < 78){
             return "C";
-        } else if (score >= 70.0) {
+        }
+        else if(score >= 70 && score < 72){
             return "C-";
-        } else if (score >= 60.0) {
+        }
+        else if(score >= 60 && score < 70){
             return "D";
-        } else {
+        }
+        else{
             return "F";
         }
     }
-
 
     @Override
     public String toString() {
         String rv = "Name: " + getStudentName() + "\n";
         rv += "G#: " + getGNumber() + "\n";
-        rv += "Participation: " + getParticipation() + "\n";
-        rv += "Readings: " + unweightedReadingsScore() + "\n";
-        rv += "Labs: " + unweightedLabsScore() + "\n";
-        rv += "Exercises: " + unweightedExercisesScore() + "\n";
-        rv += "Projects: " + unweightedProjectsScore() + "\n";
-        rv += "Midterm: " + getMidterm() + "\n";
-        rv += "Final Exam: " + getFinalExam() + "\n";
-        rv += "Total Score: " + totalScore() + "\n";
-        rv += "Letter Grade: " + letterGrade() + "\n";
+        rv += "Participation: " + participation + "\n";
+        rv += "Readings: " + unweightedReadingsScore() + ", " + Arrays.toString(readings) + "\n";
+        rv += "Labs: " + unweightedLabsScore() + ", " + Arrays.toString(labs) + "\n";
+        rv += "Exercises: " + unweightedExercisesScore() + ", " + Arrays.toString(exercises) + "\n";
+        rv += "Projects: " + unweightedProjectsScore() + ", " + Arrays.toString(projects) + "\n";
+        rv += "Midterm: " + midterm + "\n";
+        rv += "Final Exam: " + finalExam + "\n";
+        rv += totalScore() + ", " + letterGrade() + "\n";
         return rv;
     }
-    
-    public static void main(String[]args){
-    
+
+    public double getParticipation() {
+        return participation;
+    }
+
+    public void setParticipation(double participation) {
+        this.participation = participation;
+    }
+
+    public double getMidterm() {
+        return midterm;
+    }
+
+    public void setMidterm(double midterm) {
+        this.midterm = midterm;
+    }
+
+    public double getFinalExam() {
+        return finalExam;
+    }
+
+    public void setFinalExam(double finalExam) {
+        this.finalExam = finalExam;
+    }
+
+    public String getStudentName() {
+        return studentName;
+    }
+
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
+    }
+
+    public String getGNumber() {
+        return gNumber;
+    }
+
+    public void setGNumber(String gNumber) {
+        this.gNumber = gNumber;
     }
 }
