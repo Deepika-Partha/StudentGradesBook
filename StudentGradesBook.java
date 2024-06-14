@@ -7,10 +7,8 @@
 */
 
 public class StudentGradesBook {
-
-// This global variable is not needed.
-//     //int i is for the for loops
-//     private int i;
+    //int i is for the for loops
+    private int i;
 
     private double participation;
     private double midterm;
@@ -37,6 +35,8 @@ public class StudentGradesBook {
     and then create empty array instances (with appropriate type specifiers) for the readings, labs, exercises, and projects fields.
     Note: I'm not too sure what it means by "create empty array instances for the readings, labs, exercises, and projects fields." */
     public StudentGradesBook(String name, String gNumber, double[] weights) {
+       //code
+        setStudentName(name);
         setGNumber(gNumber);
         setWeights(weights);
         
@@ -63,19 +63,15 @@ public class StudentGradesBook {
     public double getParticipation(){
         return participation;
     }
-    
     public double getMidterm(){
         return midterm;
     }
-    
     public double getFinalExam(){
         return finalExam;
     }
-    
     public String getStudentName(){
         return studentName;
     }
-    
     public String getGNumber(){
         return gNumber;
     }
@@ -84,20 +80,15 @@ public class StudentGradesBook {
     public void setParticipation(double participation){
         this.participation = participation;
     }
-    
     public void setMidterm(double midterm){
         this.midterm = midterm;
     }
-    
     public void setFinalExem(double finalExam){
         this.finalExam = finalExam;
     }
-    
-    //EDIT: I believe you meant to write student name (Currenly produces compiler errors)
-    public void setStudentName(String studentName) {
-        this.studentName = studentName;
+    public void setStudentNumber(String studentNumber){
+        this.studentNumber = studentNumber;
     }
-    
     public void setGNumber(String gNumber){
         this.gNumber = gNumber;
     }
@@ -123,75 +114,78 @@ public class StudentGradesBook {
     skip the first 15, and then add together the remaining scores starting from the 16th. 
     Note: if there are fewer than 16 items in the reading category, this method should just return 100, indicating full credit. 
     P.S. This is straight from the exercise */
-    
-    
-    // EDIT: edited this code, was hard to understand
-    public double unweightedReadingsScore() {
-        if (readings.length < 16) {
+    public double unweightedReadingsScore(){
+        //count is for the number of grades in readings list
+        int count = 0;
+        //sum is to find the sum all the grades past the first 15 grades
+        double sum = 0;
+        //if statement is for if the array contains more than 15 grades
+        if(readings.length >= 16){
+            for(i = 15; i < readings.length; i++){
+                sum += readings[i];
+                count++;
+                return sum / count;
+            }
+        }
+        else{
             return 100.0;
         }
-        double sum = 0;
-        for (int i = 15; i < readings.length; i++) {
-            sum += readings[i];
-        }
-        return sum / (readings.length - 15);
+            
     }
 
     //rest of the unweighted scores
-    
-    /* EDIT: to reduce redundancy I just made a 
-     calculateAverage method 
-    
-    */
-    public double unweightedLabsScore() {
-        return calculateAverage(labs);
-    }
-
-    public double unweightedExercisesScore() {
-        return calculateAverage(exercises);
-    }
-
-    public double unweightedProjectsScore() {
-        return calculateAverage(projects);
-    }
-
-    private double calculateAverage(double[] array) {
-        if (array.length == 0) {
-            return 100.0;
+    public double unweightedLabsScore(){
+        int count = 0;
+        int sum = 0;
+        for(i = 0; i < labs.length; i++){
+            sum += labs.length[i];
+            count++; 
         }
-        double sum = 0;
-        for (double score : array) {
-            sum += score;
+        return sum / count;
+    }
+    public double unweightedExercisesScore(){
+        int count = 0;
+        int sum = 0;
+        for(i = 0; i < exercises.length; i++){
+            sum += exercises.length[i];
+            count++; 
         }
-        return sum / array.length;
+        return sum / count;
+    }
+    
+    public double unweightedProjectsScore(){
+        int count = 0;
+        int sum = 0;
+        for(i = 0; i < projects.length; i++){
+            sum += projects.length[i];
+            count++; 
+        }
+        return sum / count;
+    
     }
 
     //finals grading
-    
-    /* EDIT: You don't need if-else statements because
-    using the comparative operators in this case will
-    return T/F.
-    
-    */
-    public boolean finalReplacesMidterm() {
-        return finalExam > midterm;
+    public boolean finalReplacesMidterm(){
+        if(finalExam < midterm){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
-    public boolean finalIsPassing() {
-        return finalExam >= 60.0;
+    public boolean finalIsPassing(){
+        if(finalExam >= 60.0){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     //total score calcuation
-    
     public double totalScore(){
-    
-        /* EDIT: This method is meant to return a double
-           but the variable result is int...
-           
-           there was also no return statement here
-    
-        */
-        double result = 0.0;
+        int result = 0;
         result += participation * participationWeight;
         result += unweightedReadingsScore() * readingsWeight;
         result += unweightedLabsScore() * labsWeight;
@@ -199,7 +193,7 @@ public class StudentGradesBook {
         result += unweightedProjectsScore() * projectsWeight;
 
         //Note: this is to check whether or not the final replaces the midterm when the final is greater than the midterm. 
-        if(finalReplacesMidterm()){
+        if(finalReplacesMidterm){
             result += finalExam * finalExamWeight;
         }
         else{
@@ -207,46 +201,49 @@ public class StudentGradesBook {
             result += finalExam * finalExamWeight;
         }
 
-        return result;
+        
     }
 
     //letter grading
-    /* EDIT: You were missing parentheses which 
-       caused complier errors so I rewrote this
-    
-    */
-    public String letterGrade() {
-        if (!finalIsPassing()) {
+    public String letterGrade(){
+        if(!finalIsPassing()){
             return "F";
         }
-
-        double score = totalScore();
-
-        if (score >= 98.0) {
+        if(totalScore() >= 98 && totalCore() <= 100){
             return "A+";
-        } else if (score >= 92.0) {
+        }
+        else if(totalScore() >= 92 && totalCore() < 98){
             return "A";
-        } else if (score >= 90.0) {
+        }
+        else if(totalScore() >= 90 && totalCore() < 92){
             return "A-";
-        } else if (score >= 88.0) {
+        }
+        else if(totalScore() >= 88 && totalCore() <=90){
             return "B+";
-        } else if (score >= 82.0) {
+        }
+        else if(totalScore() >= 82 && totalCore() < 88){
             return "B";
-        } else if (score >= 80.0) {
+        }
+        else if(totalScore() >= 80 && totalCore() < 82){
             return "B-";
-        } else if (score >= 78.0) {
+        }
+        else if(totalScore() >= 78 && totalCore() < 80){
             return "C+";
-        } else if (score >= 72.0) {
+        }
+        else if(totalScore() >= 72 && totalCore() < 78){
             return "C";
-        } else if (score >= 70.0) {
+        }
+        else if(totalScore() >= 70 && totalCore() < 72){
             return "C-";
-        } else if (score >= 60.0) {
+        }
+        else if(totalScore() >= 60 && totalCore() < 70){
             return "D";
-        } else {
+        }
+        else{
             return "F";
         }
+        
     }
-
 
     @Override
     public String toString() {
